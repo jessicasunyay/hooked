@@ -14,7 +14,7 @@ export const usePatternsStore = create<PatternsState>()(
   persist(
     (set) => ({
       cards: [],
-      addCard: (card) =>
+      addCard: (card) => //takes a card without id/dateSaved and auto-generates a UUID and date before adding to array
         set((state) => ({
           cards: [
             ...state.cards,
@@ -25,18 +25,18 @@ export const usePatternsStore = create<PatternsState>()(
             },
           ],
         })),
-      updateCard: (id, updates) =>
+      updateCard: (id, updates) => //finds card with matching id and updates it
         set((state) => ({
           cards: state.cards.map((c) => (c.id === id ? { ...c, ...updates } : c)),
         })),
-      deleteCard: (id) =>
+      deleteCard: (id) => //filters out card with matching id
         set((state) => ({
           cards: state.cards.filter((c) => c.id !== id),
         })),
     }),
     {
       name: "hooked-patterns",
-      storage: createJSONStorage(() => wxtStorage),
+      storage: createJSONStorage(() => wxtStorage), //tells persist to use storage-adapter.ts
     },
   ),
 );

@@ -1,5 +1,7 @@
 export default defineBackground(() => {
-  chrome.sidePanel
+  browser.sidePanel
     .setPanelBehavior({ openPanelOnActionClick: false })
-    .catch((error) => console.error(error));
+    .catch((error: unknown) => console.error(error));
 });
+
+/*Runs once when the extension loads, tells Chrome not to open side panel*/

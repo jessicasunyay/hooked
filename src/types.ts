@@ -2,7 +2,7 @@ export type Status = "to-try" | "wip" | "completed";
 
 export type Region = "us" | "uk";
 
-export type GlossaryProviderId = "local";
+export type GlossaryProviderId = "local"; //eventually might add AI option
 
 export interface PatternCard {
   id: string;

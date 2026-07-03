@@ -1,17 +1,19 @@
 import { useSettingsStore } from "@/src/store/settings";
 
 function App() {
+  //pull values + setters from settings store
   const stitchModeEnabled = useSettingsStore((s) => s.stitchModeEnabled);
   const region = useSettingsStore((s) => s.region);
   const setStitchMode = useSettingsStore((s) => s.setStitchMode);
   const setRegion = useSettingsStore((s) => s.setRegion);
 
+  //function to open side panel and close popup
   const openLibrary = async () => {
-    await chrome.sidePanel.setOptions({
+    await browser.sidePanel.setOptions({
       enabled: true,
       path: "sidepanel.html",
     });
-    await chrome.sidePanel.open({ windowId: chrome.windows.WINDOW_ID_CURRENT });
+    await browser.sidePanel.open({ windowId: browser.windows.WINDOW_ID_CURRENT });
     window.close();
   };
 

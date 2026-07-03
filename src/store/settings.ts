@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create } from "zustand"; //creates a Zustand store
 import { persist, createJSONStorage } from "zustand/middleware";
 import type { Region, Settings } from "@/src/types";
 import { wxtStorage } from "./storage-adapter";
@@ -10,8 +10,8 @@ interface SettingsState extends Settings {
 }
 
 export const useSettingsStore = create<SettingsState>()(
-  persist(
-    (set) => ({
+  persist( //wraps the store so every change auto-saves to Chrome storage
+    (set) => ({ //initial state + setter functions
       stitchModeEnabled: false,
       autoDetectEnabled: true,
       region: "us",
@@ -21,9 +21,9 @@ export const useSettingsStore = create<SettingsState>()(
       setAutoDetect: (enabled) => set({ autoDetectEnabled: enabled }),
       setRegion: (region) => set({ region }),
     }),
-    {
+    { 
       name: "hooked-settings",
-      storage: createJSONStorage(() => wxtStorage),
+      storage: createJSONStorage(() => wxtStorage), //tells persist to use storage-adapter.ts
     },
   ),
 );

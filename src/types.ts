@@ -1,6 +1,6 @@
 export type Status = "to-try" | "wip" | "completed";
 
-export type Region = "us" | "uk";
+export type Terminology = "us" | "uk";
 
 export type GlossaryProviderId = "local"; //eventually might add AI option
 
@@ -26,7 +26,7 @@ export interface GlossaryEntry {
 export interface Settings {
   stitchModeEnabled: boolean;
   autoDetectEnabled: boolean;
-  region: Region;
+  terminology: Terminology;
   customEntries: GlossaryEntry[];
   provider: GlossaryProviderId;
 }

@@ -19,8 +19,8 @@ library of project cards.
    Graph image) are resolved at display time, never stored, so each card is
    just a few hundred bytes.
 
-Built to leave architectural room for a V2 AI-powered definition provider
-without reshaping the data model or UI.
+Built with a provider abstraction so the glossary data source is swappable
+and testable without reshaping the data model or UI.
 
 ---
 
@@ -139,14 +139,17 @@ correct entry.
 interface Settings {
   stitchModeEnabled: boolean
   autoDetectEnabled: boolean
-  region: "us" | "uk"
+  terminology: "us" | "uk"
   customEntries: GlossaryEntry[]
-  provider: "local" // | "ai"  (V2)
+  provider: "local"
 }
 ```
 
-The user's chosen `region` sets the primary name displayed in tooltips; the
-other region's name is shown as the equivalent.
+The user's chosen `terminology` (US or UK crochet terms — a preference, not
+geography) sets the primary name displayed in tooltips for non-ambiguous
+same-name-different-word entries (e.g. gauge/tension, yo/yoh). Ambiguous
+abbreviations (dc, tr, etc.) are handled by page-level terminology detection
+(Phase 4) or fall back to showing both interpretations.
 
 ### 5.3 Content script behavior (when stitch mode is ON)
 
@@ -156,8 +159,8 @@ other region's name is shown as the equivalent.
 3. Wrap matches in `<mark class="hooked-term" data-key="...">` with a subtle
    dotted underline.
 4. On hover, render a Shadow-DOM tooltip (CSS-isolated) showing:
-   - Primary name (per user's region)
-   - Other-region equivalent
+   - Primary name (per user's terminology preference)
+   - Other-region equivalent (only when us !== uk)
    - Definition text
 5. `MutationObserver` watches for SPA/dynamic content; debounced and skips
    already-wrapped nodes for performance.
@@ -174,20 +177,31 @@ other region's name is shown as the equivalent.
   - …then message the popup/content script to **suggest** enabling. Never
   silent auto-enable, to respect "don't misfire on unrelated pages".
 
-### 5.5 V2 AI flexibility (infrastructure built now)
+### 5.5 GlossaryProvider abstraction
 
 All lookups go through a `GlossaryProvider` interface:
 
 ```ts
 interface GlossaryProvider {
-  lookup(term: string): Promise<GlossaryEntry | null>
+  lookup(term: string): Promise<GlossaryEntry[]>
   search(prefix: string): Promise<GlossaryEntry[]>
 }
 ```
 
 V1 ships `LocalProvider` (queries hardcoded glossary + user's `customEntries`).
-V2 adds `AIProvider` behind a settings flag — no UI or data-model changes
-needed. `customEntries[]` already lives in storage so the data shape is ready.
+The interface earns its keep through:
+
+- **Testability** — tests can swap in a fake provider with deterministic data.
+- **Separation of concerns** — "where definitions come from" is decoupled
+  from "how we scan pages and render tooltips."
+- **Future flexibility** — a different data source could be added later
+  without touching call sites.
+
+**AI provider deliberately not planned.** The crochet community has documented
+concerns about AI (Ravelry banned AI-generated patterns in 2023). For a tool
+built for crocheters, "AI-powered" can be an active negative signal to the
+target audience rather than a positive one. The `provider` field stays in
+`Settings` as a harmless slot, but no `AIProvider` is on the roadmap.
 
 ---
 
@@ -281,9 +295,9 @@ interface GlossaryEntry {
 interface Settings {
   stitchModeEnabled: boolean
   autoDetectEnabled: boolean
-  region: "us" | "uk"
+  terminology: "us" | "uk"
   customEntries: GlossaryEntry[]
-  provider: "local" // | "ai"
+  provider: "local"
 }
 ```
 
@@ -306,7 +320,7 @@ fallback) is resolved in the side panel via `src/lib/image.ts`.
 - Hardcode the crochet glossary (`src/data/glossary.ts`)
 - Implement `GlossaryProvider` interface + `LocalProvider`
 - Build the content script: DOM scan, highlight, Shadow-DOM tooltip
-- Popup toggle for stitch mode + region selector
+- Popup toggle for stitch mode + terminology selector
 - Wire messaging between popup ↔ background ↔ content script
 - Test on a real crochet pattern page
 
@@ -321,6 +335,11 @@ fallback) is resolved in the side panel via `src/lib/image.ts`.
 ### Phase 4 — Auto-detect + Polish
 - `detect.ts` heuristics (domain allowlist + keyword density sampling)
 - Suggest-to-enable UX (never silent auto-enable)
+- **Page-level terminology detection** (`src/lib/detect-terminology.ts`):
+  scan page text for explicit phrases like "US terms" / "UK terminology".
+  When detected, tooltips for ambiguous abbreviations (dc, tr, etc.) show
+  only the detected interpretation. When not detected, fall back to showing
+  both. Phrase-matching only (no heuristics) — explicit phrases are reliable.
 - Keyboard shortcut for stitch-mode toggle
 - Icons and visual polish
 - Edge cases (SPA navigation, iframes, dynamic content)
@@ -328,7 +347,6 @@ fallback) is resolved in the side panel via `src/lib/image.ts`.
 ### Phase 5 — V2 (later)
 - PDF support via bundled PDF.js viewer page (extension page) so the content
   script can run inside PDFs (native Chrome PDF viewer blocks content scripts)
-- `AIProvider` for definitions
 - Export/import library data
 - Optional: progress %, hook/yarn used fields on cards
 
@@ -356,7 +374,7 @@ Hooked demonstrates:
 - Browser runtime environments (MV3 service worker, popup, side panel)
 - Local storage persistence (`chrome.storage.local` + Zustand adapters)
 - Lightweight interactive browser utilities (tooltips, card grid, filters)
-- Provider-pattern abstraction (V2 AI slot without re-architecture)
+- Provider-pattern abstraction (swappable, testable glossary data source)
 
 Intentionally distinct from the planned clothes-organizer web app, which will
 demonstrate full-stack architecture, relational database, authentication, and

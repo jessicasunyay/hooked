@@ -3,9 +3,9 @@ import { useSettingsStore } from "@/src/store/settings";
 function App() {
   //pull values + setters from settings store
   const stitchModeEnabled = useSettingsStore((s) => s.stitchModeEnabled);
-  const region = useSettingsStore((s) => s.region);
+  const terminology = useSettingsStore((s) => s.terminology);
   const setStitchMode = useSettingsStore((s) => s.setStitchMode);
-  const setRegion = useSettingsStore((s) => s.setRegion);
+  const setTerminology = useSettingsStore((s) => s.setTerminology);
 
   //function to open side panel and close popup
   const openLibrary = async () => {
@@ -35,8 +35,8 @@ function App() {
         <div>
           <label className="text-sm font-medium block mb-1">Terminology</label>
           <select
-            value={region}
-            onChange={(e) => setRegion(e.target.value as "us" | "uk")}
+            value={terminology}
+            onChange={(e) => setTerminology(e.target.value as "us" | "uk")}
             className="w-full rounded border border-slate-300 px-2 py-1 text-sm"
           >
             <option value="us">US</option>

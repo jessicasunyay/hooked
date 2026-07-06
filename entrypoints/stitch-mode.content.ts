@@ -336,7 +336,7 @@ function startObserver(): void {
     }
     observerTimer = window.setTimeout(() => {
       observerTimer = null;
-      if (!isActive) return; // AI: User toggled off during the debounce window.
+      if (!isActive) return; // user toggled off during the debounce window.
       scanMutatedNodes(mutations);
     }, OBSERVER_DEBOUNCE_MS);
   });

@@ -1,4 +1,5 @@
 import { useSettingsStore } from "@/src/store/settings";
+import { sendToBackground } from "@/src/lib/messaging";
 
 function App() {
   //pull values + setters from settings store
@@ -6,6 +7,13 @@ function App() {
   const terminology = useSettingsStore((s) => s.terminology);
   const setStitchMode = useSettingsStore((s) => s.setStitchMode);
   const setTerminology = useSettingsStore((s) => s.setTerminology);
+
+  const toggleStitchMode = (enabled: boolean) => {
+    setStitchMode(enabled);
+    sendToBackground({ type: "STITCH_MODE_TOGGLE", enabled }).catch((error) =>
+      console.error("[Hooked] Failed to send STITCH_MODE_TOGGLE:", error),
+    );
+  };
 
   //function to open side panel and close popup
   const openLibrary = async () => {
@@ -27,7 +35,7 @@ function App() {
           <input
             type="checkbox"
             checked={stitchModeEnabled}
-            onChange={(e) => setStitchMode(e.target.checked)}
+            onChange={(e) => toggleStitchMode(e.target.checked)}
             className="h-4 w-4"
           />
         </label>

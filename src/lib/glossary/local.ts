@@ -6,7 +6,7 @@ import type { GlossaryProvider } from "./provider";
 // fallback chain for lookups
 //   1. explicit map: prebuilt lookup from hardcoded lowercased alias → entries.
 //   2. compound matcher: a regex synthesizes a GlossaryEntry on the fly from the base stitch, inherits ambiguity
-//   3. Empty array: not recognized
+//   3. empty array: not recognized
 
 export class LocalProvider implements GlossaryProvider {
   

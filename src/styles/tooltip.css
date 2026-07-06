@@ -1,0 +1,122 @@
+/* AI: ──────────────────────────────────────────────────────────────────────
+   TOOLTIP CSS — YOUR PIECE TO CUSTOMIZE
+   ──────────────────────────────────────────────────────────────────────────
+
+   This file styles the tooltip that appears when you hover over a highlighted
+   crochet abbreviation. It is injected INSIDE a Shadow DOM, which means:
+
+     1. The page's CSS cannot affect the tooltip (no leaking IN)
+     2. The tooltip's CSS cannot affect the page (no leaking OUT)
+     3. You don't need to worry about specificity wars with the host page
+
+   You can use simple, clean selectors here. No need for !important or crazy
+   specificity. The styles below are scoped to the shadow root.
+
+   ELEMENT STRUCTURE (what you're styling):
+   ───────────────────────────────────────
+   For an AMBIGUOUS term (e.g. "dc" — has two interpretations):
+
+   <div class="hooked-tooltip">
+     <div class="hooked-tooltip__entry">
+       <div class="hooked-tooltip__names">
+         <span class="hooked-tooltip__name hooked-tooltip__name--primary">single crochet</span>
+         <span class="hooked-tooltip__name hooked-tooltip__name--equiv">UK: double crochet</span>
+       </div>
+       <p class="hooked-tooltip__def">Insert hook, yarn over, pull up a loop...</p>
+     </div>
+     <div class="hooked-tooltip__entry">
+       <div class="hooked-tooltip__names">
+         <span class="hooked-tooltip__name hooked-tooltip__name--primary">double crochet</span>
+         <span class="hooked-tooltip__name hooked-tooltip__name--equiv">UK: treble</span>
+       </div>
+       <p class="hooked-tooltip__def">Yarn over, insert hook, pull up a loop...</p>
+     </div>
+   </div>
+
+   For a SAME-NAME term (e.g. "sl st" — us === uk, only one interpretation):
+
+   <div class="hooked-tooltip">
+     <div class="hooked-tooltip__entry">
+       <div class="hooked-tooltip__names">
+         <span class="hooked-tooltip__name hooked-tooltip__name--primary">slip stitch</span>
+       </div>
+       <p class="hooked-tooltip__def">Insert hook into the stitch, yarn over...</p>
+     </div>
+   </div>
+
+   For a NON-AMBIGUOUS different-name term (e.g. "hdc" — us !== uk but
+   only one interpretation):
+
+   <div class="hooked-tooltip">
+     <div class="hooked-tooltip__entry">
+       <div class="hooked-tooltip__names">
+         <span class="hooked-tooltip__name hooked-tooltip__name--primary">half double crochet</span>
+         <span class="hooked-tooltip__name hooked-tooltip__name--equiv">UK: half treble</span>
+       </div>
+       <p class="hooked-tooltip__def">Yarn over, insert hook, pull up a loop...</p>
+     </div>
+   </div>
+
+   THINGS TO NOTE:
+   - The primary name comes first; the equivalent (if any) comes second
+   - The "equiv" label is "UK:" or "US:" depending on the user's terminology
+     setting (if terminology is "us", primary = US name, equiv = "UK: ...")
+   - When us === uk, there is only one name (no equiv span rendered)
+   - When there are two entries (ambiguous), they stack vertically
+
+   THINGS TO AVOID:
+   - Don't set position/top/left on .hooked-tooltip — the content script
+     handles positioning on the host element
+   - Don't set display: none — show/hide is handled by the content script
+
+   FEEL FREE TO REPLACE EVERYTHING BELOW with your own styling. The only
+   requirement is that the selector names match the class names above.
+   ────────────────────────────────────────────────────────────────────── */
+
+/* AI: Default styles — feel free to replace these entirely. */
+
+.hooked-tooltip {
+  max-width: 320px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1; /* slate-300 */
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #1e293b; /* slate-800 */
+  overflow: hidden;
+}
+
+.hooked-tooltip__entry {
+  padding: 10px 12px;
+}
+
+/* AI: When there are two entries (ambiguous term), add a divider between
+   them. The second entry gets a top border. */
+.hooked-tooltip__entry + .hooked-tooltip__entry {
+  border-top: 1px solid #e2e8f0; /* slate-200 */
+}
+
+.hooked-tooltip__names {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 4px;
+}
+
+.hooked-tooltip__name--primary {
+  font-weight: 600;
+  color: #0f172a; /* slate-900 */
+}
+
+.hooked-tooltip__name--equiv {
+  font-size: 12px;
+  color: #64748b; /* slate-500 */
+}
+
+.hooked-tooltip__def {
+  margin: 0;
+  color: #334155; /* slate-700 */
+}

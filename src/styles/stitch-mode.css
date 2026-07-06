@@ -1,0 +1,55 @@
+/* AI: ──────────────────────────────────────────────────────────────────────
+   STITCH MODE HIGHLIGHT CSS — YOUR PIECE TO CUSTOMIZE
+   ──────────────────────────────────────────────────────────────────────────
+
+   This file styles the <mark> elements that wrap crochet abbreviations on
+   the page when stitch mode is on. WXT automatically injects this CSS into
+   every page where the content script runs.
+
+   THE SELECTOR YOU'RE STYLING:
+     mark.hooked-term
+
+   WHAT IT SHOULD LOOK LIKE (the goal):
+     - A subtle dotted underline beneath the matched abbreviation
+     - NOT flashy or intrusive — the page should still feel like the page
+     - Just enough visual cue that the user knows "this is hoverable"
+
+   THINGS TO AVOID:
+     - Bright background colors (would make the page look broken)
+     - Bold text (changes line height and draws too much attention)
+     - Large padding or margins (shifts the page layout)
+
+   FEEL FREE TO REPLACE EVERYTHING BELOW with your own styling. The only
+   requirement is that the selector stays `mark.hooked-term` (and
+   `mark.hooked-term:hover` if you want a hover state).
+
+   TOOLTIP STYLES (Chunk 3): The tooltip will live inside a Shadow DOM, so
+   its CSS will be separate from this file. You'll get a separate spec for
+   that when we get to Chunk 3. For now, just style the highlight.
+   ────────────────────────────────────────────────────────────────────── */
+
+/* AI: Default styles — feel free to replace these entirely. */
+
+mark.hooked-term {
+  /* AI: Dotted underline is the classic "this has a definition" cue,
+     similar to how browsers style <abbr> elements. */
+  text-decoration: underline dotted;
+  text-decoration-color: #6b7280; /* slate-500 — subtle gray */
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+
+  /* AI: Slight color tint on the text itself so the term is just barely
+     distinguishable even without the underline. Remove if too much. */
+  color: inherit;
+
+  /* AI: Reset browser default <mark> styling (which is a yellow highlight
+     background). We don't want that — it would look like a search match. */
+  background-color: transparent;
+}
+
+mark.hooked-term:hover {
+  /* AI: On hover, darken the underline so the user gets feedback that this
+     is interactive. The tooltip itself appears via Chunk 3. */
+  text-decoration-color: #1e293b; /* slate-800 */
+  cursor: help;
+}

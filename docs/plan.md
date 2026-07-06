@@ -364,6 +364,21 @@ fallback) is resolved in the side panel via `src/lib/image.ts`.
   only if cached by the browser.
 - **Text-only definitions** — No YouTube/external links in V1. The data model
   can accommodate a `url?` field later without migration.
+- **Custom entries & ambiguity sorting** — When stitch mode encounters an
+  ambiguous term (e.g. "dc", "double crochet"), the tooltip shows both
+  interpretations, ordered by the user's terminology preference. The ordering
+  logic (`src/lib/glossary/ambiguous.ts`) handles built-in glossary entries
+  via two strategies: name matching (derivation from `us`/`uk` fields, works
+  for full phrases) and a hardcoded abbreviation map (for abbreviations like
+  "dc", since `aliases` is a flat `string[]` with no region tags). Future
+  custom entries added by the user will work correctly for full-phrase
+  ambiguity (name matching covers them) but NOT for custom ambiguous
+  abbreviations (the hardcoded map only covers built-in terms). This is an
+  edge case (a custom entry would need an abbreviation colliding with an
+  existing ambiguous abbreviation AND meaning a different stitch). If it
+  becomes relevant when custom entries ship, the fix is either enriching
+  `aliases` to `Array<{ value: string; region?: "us" | "uk" | "both" }>` or
+  letting users flag ambiguous custom entries in the form.
 
 ---
 

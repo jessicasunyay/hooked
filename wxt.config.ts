@@ -8,7 +8,7 @@ export default defineConfig({
     name: 'Hooked',
     description:
       'Hover-to-define crochet stitch abbreviations and save pattern pages to a searchable library.',
-    permissions: ['storage', 'sidePanel', 'activeTab'], //what Chrome APIs I'm allowed to use
+    permissions: ['storage', 'sidePanel', 'activeTab', 'tabs'], //what Chrome APIs I'm allowed to use
   },
   vite: () => ({ //registers Tailwind as a build plugin
     plugins: [tailwindcss()],

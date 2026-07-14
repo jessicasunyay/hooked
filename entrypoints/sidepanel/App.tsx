@@ -265,7 +265,7 @@ function ListView({
   const hasResults = filteredCards.length > 0;
 
   return (
-    <div className="flex h-full flex-col bg-white text-slate-900">
+    <div className="flex h-screen flex-col bg-white text-slate-900">
       <header className="border-b border-slate-200 px-4 py-3">
         <h1 className="text-lg font-bold">
           Pattern Library
@@ -374,7 +374,7 @@ function DetailView({
   const [imgFailed, setImgFailed] = useState(false);
 
   return (
-    <div className="flex h-full flex-col bg-white text-slate-900">
+    <div className="flex h-screen flex-col bg-white text-slate-900">
       <header className="flex items-center gap-2 border-b border-slate-200 px-4 py-3">
         <button
           type="button"

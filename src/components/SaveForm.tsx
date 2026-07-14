@@ -210,7 +210,7 @@ export function SaveForm({ onDone, onSaved }: SaveFormProps) {
       <button
         type="submit"
         disabled={!canSave}
-        className="w-full rounded bg-slate-900 px-3 py-2 text-sm font-medium text-white hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
+        className="w-full rounded-lg bg-brand-light px-3 py-2.5 text-sm font-semibold text-brand-dark shadow-sm transition hover:bg-brand-dark hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
       >
         Save Pattern
       </button>

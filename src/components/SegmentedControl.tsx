@@ -33,7 +33,7 @@ export function SegmentedControl({
             onClick={() => onChange(option.value)}
             className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
               selected
-                ? "bg-slate-900 text-white"
+                ? "bg-brand-dark text-white"
                 : "text-slate-600 hover:text-slate-900"
             }`}
           >

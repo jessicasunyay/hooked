@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSettingsStore } from "@/src/store/settings";
 import { sendToBackground } from "@/src/lib/messaging";
 import { SaveForm } from "@/src/components/SaveForm";
-import { Toggle } from "@/src/components/Toggle";
+import { YarnBall } from "@/src/components/YarnBall";
 import { SegmentedControl } from "@/src/components/SegmentedControl";
 
 // terminology options for the segmented control
@@ -40,24 +40,40 @@ function App() {
   };
 
   return (
-    <div className="w-80 p-4 bg-white text-slate-900">
-      <h1 className="mb-3 text-xl font-bold">Hooked</h1>
+    <div className="w-96 bg-white text-slate-900">
+      {/* branded header */}
+      <header className="bg-brand-light px-5 py-4 text-center text-brand-dark">
+        <h1 className="text-lg font-bold tracking-tight">Hooked</h1>
+        <p className="mt-0.5 text-xs font-medium text-brand-dark/70">
+          Your crochet pattern companion
+        </p>
+      </header>
 
-      <div className="space-y-3">
-        {/* compact controls row */}
-        <div className="flex items-center justify-between gap-3">
-          <Toggle
-            label="Stitch Mode"
-            checked={stitchModeEnabled}
-            onChange={toggleStitchMode}
+      <div className="space-y-4 p-5">
+        {/* stitch mode toggle — yarn ball hero */}
+        <div className="flex flex-col items-center pt-1">
+          <YarnBall
+            active={stitchModeEnabled}
+            onToggle={() => toggleStitchMode(!stitchModeEnabled)}
           />
+          <p className="mt-3 text-sm font-semibold text-slate-700">Stitch Mode</p>
+          <p className="text-xs text-slate-500">
+            {stitchModeEnabled
+              ? "Hover abbreviations for definitions"
+              : "Click the yarn ball to enable"}
+          </p>
+        </div>
+
+        {/* terminology */}
+        <section className="flex items-center justify-between gap-3">
+          <span className="text-sm font-medium text-slate-700">Terminology</span>
           <SegmentedControl
             options={TERMINOLOGY_OPTIONS}
             value={terminology}
             onChange={(v) => setTerminology(v as "us" | "uk")}
             ariaLabel="Terminology"
           />
-        </div>
+        </section>
 
         <hr className="border-slate-200" />
 
@@ -72,14 +88,14 @@ function App() {
             }}
           />
         ) : justSaved ? (
-          <div className="flex items-center justify-center rounded border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-700">
+          <div className="flex items-center justify-center rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-sm font-medium text-emerald-700">
             Saved!
           </div>
         ) : (
           <button
             type="button"
             onClick={() => setShowForm(true)}
-            className="w-full rounded border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
           >
             Save this page
           </button>
@@ -87,7 +103,7 @@ function App() {
 
         <button
           onClick={openLibrary}
-          className="w-full rounded bg-slate-900 px-3 py-2 text-sm font-medium text-white hover:bg-slate-700"
+          className="w-full rounded-lg bg-brand-light px-3 py-2.5 text-sm font-semibold text-brand-dark shadow-sm transition hover:bg-brand-dark hover:text-white"
         >
           Open Pattern Library
         </button>

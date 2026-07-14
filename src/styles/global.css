@@ -1,1 +1,60 @@
 @import "tailwindcss"; /*pulls all of Tailwind's classes*/
+
+/*
+  Brand palette — a gentle pastel blue with a deep navy accent.
+  Used across the popup header, primary buttons, segmented control,
+  and yarn-ball glow. Tweak these two values to retheme the whole app.
+*/
+@theme {
+  --color-brand-light: #8fc2e9;
+  --color-brand-dark: #0c3470;
+}
+
+/*
+  Make the document fill the viewport so `h-full` resolves correctly.
+  Without this, the side panel's `h-full` collapses to content height and
+  leaves a white gap (the "white border"), and the popup gets a default
+  margin halo around any colored background.
+*/
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #ffffff;
+}
+
+/* gentle idle bob for the yarn ball while Stitch Mode is on */
+@keyframes yarn-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.yarn-float {
+  animation: yarn-float 2.6s ease-in-out infinite;
+}
+
+/* one-shot pop when the yarn ball is toggled */
+@keyframes yarn-pop {
+  0% {
+    transform: scale(0.8);
+  }
+  55% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.yarn-pop {
+  animation: yarn-pop 0.42s ease-out;
+}

@@ -1,5 +1,15 @@
+import { useState } from "react";
 import { useSettingsStore } from "@/src/store/settings";
 import { sendToBackground } from "@/src/lib/messaging";
+import { SaveForm } from "@/src/components/SaveForm";
+import { Toggle } from "@/src/components/Toggle";
+import { SegmentedControl } from "@/src/components/SegmentedControl";
+
+// terminology options for the segmented control
+const TERMINOLOGY_OPTIONS = [
+  { value: "us", label: "US" },
+  { value: "uk", label: "UK" },
+];
 
 function App() {
   //pull values + setters from settings store
@@ -7,6 +17,10 @@ function App() {
   const terminology = useSettingsStore((s) => s.terminology);
   const setStitchMode = useSettingsStore((s) => s.setStitchMode);
   const setTerminology = useSettingsStore((s) => s.setTerminology);
+
+  //collapsed/expanded state for the save form
+  const [showForm, setShowForm] = useState(false);
+  const [justSaved, setJustSaved] = useState(false);
 
   const toggleStitchMode = (enabled: boolean) => {
     setStitchMode(enabled);
@@ -27,30 +41,49 @@ function App() {
 
   return (
     <div className="w-80 p-4 bg-white text-slate-900">
-      <h1 className="text-xl font-bold mb-4">Hooked</h1>
+      <h1 className="mb-3 text-xl font-bold">Hooked</h1>
 
-      <div className="space-y-4">
-        <label className="flex items-center justify-between cursor-pointer">
-          <span className="text-sm font-medium">Stitch Mode</span>
-          <input
-            type="checkbox"
+      <div className="space-y-3">
+        {/* compact controls row */}
+        <div className="flex items-center justify-between gap-3">
+          <Toggle
+            label="Stitch Mode"
             checked={stitchModeEnabled}
-            onChange={(e) => toggleStitchMode(e.target.checked)}
-            className="h-4 w-4"
+            onChange={toggleStitchMode}
           />
-        </label>
-
-        <div>
-          <label className="text-sm font-medium block mb-1">Terminology</label>
-          <select
+          <SegmentedControl
+            options={TERMINOLOGY_OPTIONS}
             value={terminology}
-            onChange={(e) => setTerminology(e.target.value as "us" | "uk")}
-            className="w-full rounded border border-slate-300 px-2 py-1 text-sm"
-          >
-            <option value="us">US</option>
-            <option value="uk">UK</option>
-          </select>
+            onChange={(v) => setTerminology(v as "us" | "uk")}
+            ariaLabel="Terminology"
+          />
         </div>
+
+        <hr className="border-slate-200" />
+
+        {/* collapsed save form / saved confirmation */}
+        {showForm ? (
+          <SaveForm
+            onDone={() => setShowForm(false)}
+            onSaved={() => {
+              setShowForm(false);
+              setJustSaved(true);
+              setTimeout(() => window.close(), 1000);
+            }}
+          />
+        ) : justSaved ? (
+          <div className="flex items-center justify-center rounded border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-700">
+            Saved!
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setShowForm(true)}
+            className="w-full rounded border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+          >
+            Save this page
+          </button>
+        )}
 
         <button
           onClick={openLibrary}

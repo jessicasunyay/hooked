@@ -442,6 +442,12 @@ function deactivate() {
 export default defineContentScript({
   // run on every page
   matches: ["<all_urls>"],
+  // AI: Run in every frame, including iframes. tabs.sendMessage without a
+  // frameId reaches all frames, so the STITCH_MODE_TOGGLE message auto-
+  // propagates. Cost when stitch mode is OFF is minimal (one listener per
+  // frame). Crochet sites rarely put pattern text in iframes, but this
+  // covers the edge case for aggregator/embed layouts.
+  allFrames: true,
 
   async main() {
     // read settings from storage

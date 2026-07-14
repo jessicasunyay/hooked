@@ -33,7 +33,7 @@ and testable without reshaping the data model or UI.
 | Styling | Tailwind CSS |
 | State | Zustand, synced to `chrome.storage.local` |
 | Storage | `chrome.storage.local` for everything (10MB cap) |
-| Stitch mode trigger | Manual toggle + auto-detect suggestion (never silent auto-enable) |
+| Stitch mode trigger | Manual toggle + keyboard shortcut (V1); auto-detect suggestion is V2 |
 | Glossary scope | Crochet only — abbreviations + terms |
 | UK/US handling | Bidirectional; user picks preferred region in settings |
 | Definition content | Text only (no YouTube/external links in V1) |
@@ -104,7 +104,7 @@ src/
     StatusBadge.tsx
     Tooltip.tsx
     SearchBar.tsx
-    FilterDropdown.tsx
+    FiltersButton.tsx
     SaveForm.tsx
     EmptyState.tsx
   types.ts                  # PatternCard, GlossaryEntry, Tag, Status, Settings
@@ -168,14 +168,17 @@ abbreviations (dc, tr, etc.) are handled by page-level terminology detection
 ### 5.4 Toggle + auto-detect
 
 - **Manual toggle** in popup flips `stitchModeEnabled` and messages the active
-  tab's content script to activate/deactivate.
-- **Auto-detect** runs in the background service worker on navigation:
-  - If URL matches a known pattern-site domain allowlist (Ravelry, Etsy
-    patterns, LoveCrafts, etc.), OR
-  - Page has high crochet-keyword density (sampled from the DOM via content
-    script),
-  - …then message the popup/content script to **suggest** enabling. Never
-  silent auto-enable, to respect "don't misfire on unrelated pages".
+  tab's content script to activate/deactivate. Rendered as a compact toggle
+  pill (Phase 4 redesign).
+- **Keyboard shortcut** (Phase 4) toggles stitch mode without opening the
+  popup, via the Chrome commands API.
+- **Auto-detect** (V2 — deferred) would run in the background service worker
+  on navigation: if the URL matches a known pattern-site domain allowlist
+  (Ravelry, Etsy patterns, LoveCrafts, etc.), OR the page has high
+  crochet-keyword density, message the popup to *suggest* enabling. Never
+  silent auto-enable. Deferred because the suggestion UX risks feeling
+  intrusive/naggy for V1's minimal settings surface, and manual toggle +
+  keyboard shortcut already cover the core flow.
 
 ### 5.5 GlossaryProvider abstraction
 
@@ -332,19 +335,43 @@ fallback) is resolved in the side panel via `src/lib/image.ts`.
 - Search bar + status filter + tag dropdown filter
 - Empty states
 
-### Phase 4 — Auto-detect + Polish
-- `detect.ts` heuristics (domain allowlist + keyword density sampling)
-- Suggest-to-enable UX (never silent auto-enable)
-- **Page-level terminology detection** (`src/lib/detect-terminology.ts`):
-  scan page text for explicit phrases like "US terms" / "UK terminology".
-  When detected, tooltips for ambiguous abbreviations (dc, tr, etc.) show
-  only the detected interpretation. When not detected, fall back to showing
-  both. Phrase-matching only (no heuristics) — explicit phrases are reliable.
-- Keyboard shortcut for stitch-mode toggle
-- Icons and visual polish
-- Edge cases (SPA navigation, iframes, dynamic content)
+### Phase 4 — Polish
+- **Popup redesign:** collapse SaveForm behind a "Save this page" button (form
+  no longer dominates the popup or auto-fills on blank tabs). Replace the
+  stitch-mode checkbox with a compact toggle pill. Replace the terminology
+  `<select>` with a US|UK segmented control. Both controls fit on one row,
+  freeing vertical space.
+- **Keyboard shortcut** for stitch-mode toggle (Chrome commands API) — toggle
+  without opening the popup. `Ctrl+Shift+H` (Mac: `Cmd+Shift+H`), user can
+  reassign at `chrome://extensions/shortcuts`.
+- **Edge cases:** iframes (content script currently doesn't run in them —
+  consider `all_frames: true` tradeoff), SPA navigation gaps (MutationObserver
+  should catch new content but needs real-world testing).
+- **Branding & visual polish:** warm/yarn-inspired theme (creams, soft browns,
+  terracotta, sage green), friendly rounded shapes, logo + fallback card
+  image (user-supplied), finalize `stitch-mode.css` + `tooltip.css` (currently
+  placeholders).
+
+> **Page-level terminology detection — deferred.** Originally planned for
+> Phase 4: scan page text for "US terms"/"UK terms" phrases, then show only
+> the detected interpretation for ambiguous abbreviations (dc, tr, etc.).
+> Dropped because of false-positive risk: a page saying "this is NOT in US
+> terms" or "I prefer US terms" would silently flip tooltips to the wrong
+> interpretation, which is worse than the current behavior (show both,
+> user's preferred first). Strict-phrase matching ("written in US terms")
+> would reduce false positives but adds complexity for a small UX gain
+> (one fewer line in the tooltip). The current "show both, user-pref first"
+> behavior ships as V1. Detection could return in V2 with smarter context
+> analysis or as an opt-in feature.
 
 ### Phase 5 — V2 (later)
+- **Auto-detect** heuristics (domain allowlist + keyword density) +
+  suggest-to-enable UX. Deferred from V1 because the suggestion banner risks
+  feeling intrusive on V1's minimal settings surface. Ships when there's
+  enough settings infrastructure to make the preference feel polished.
+- **Page-level terminology detection** — if revisited, likely with stricter
+  phrase matching or as an opt-in toggle ("Detect terminology automatically"
+  in settings, off by default).
 - PDF support via bundled PDF.js viewer page (extension page) so the content
   script can run inside PDFs (native Chrome PDF viewer blocks content scripts)
 - Export/import library data

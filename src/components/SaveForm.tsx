@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import type { Status, PatternCard } from "@/src/types";
 import { usePatternsStore } from "@/src/store/patterns";
+import { useSettingsStore } from "@/src/store/settings";
 import { TagPill } from "./TagPill";
 
 // status options for the dropdown
@@ -18,10 +19,13 @@ interface SaveFormProps {
 }
 
 export function SaveForm({ onDone, onSaved }: SaveFormProps) {
+  // settings
+  const defaultStatus = useSettingsStore((s) => s.defaultStatus);
+
   // form fields
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
-  const [status, setStatus] = useState<Status>("to-try");
+  const [status, setStatus] = useState<Status>(defaultStatus);
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
   const [notes, setNotes] = useState("");

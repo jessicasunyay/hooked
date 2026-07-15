@@ -27,6 +27,7 @@ export interface Settings {
   stitchModeEnabled: boolean;
   autoDetectEnabled: boolean;
   terminology: Terminology;
+  defaultStatus: Status;
   customEntries: GlossaryEntry[];
   provider: GlossaryProviderId;
 }

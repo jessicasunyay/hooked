@@ -49,7 +49,6 @@ mark.hooked-term {
 
 mark.hooked-term:hover {
   /* AI: On hover, darken the underline so the user gets feedback that this
-     is interactive. The tooltip itself appears via Chunk 3. */
+      is interactive. The tooltip itself appears via Chunk 3. */
   text-decoration-color: #1e293b; /* slate-800 */
-  cursor: help;
 }

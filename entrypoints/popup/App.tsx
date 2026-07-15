@@ -3,24 +3,18 @@ import { useSettingsStore } from "@/src/store/settings";
 import { sendToBackground } from "@/src/lib/messaging";
 import { SaveForm } from "@/src/components/SaveForm";
 import { YarnBall } from "@/src/components/YarnBall";
-import { SegmentedControl } from "@/src/components/SegmentedControl";
-
-// terminology options for the segmented control
-const TERMINOLOGY_OPTIONS = [
-  { value: "us", label: "US" },
-  { value: "uk", label: "UK" },
-];
+import { SettingsButton } from "@/src/components/SettingsButton";
+import { SettingsView } from "@/src/components/SettingsView";
 
 function App() {
   //pull values + setters from settings store
   const stitchModeEnabled = useSettingsStore((s) => s.stitchModeEnabled);
-  const terminology = useSettingsStore((s) => s.terminology);
   const setStitchMode = useSettingsStore((s) => s.setStitchMode);
-  const setTerminology = useSettingsStore((s) => s.setTerminology);
 
   //collapsed/expanded state for the save form
   const [showForm, setShowForm] = useState(false);
   const [justSaved, setJustSaved] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const toggleStitchMode = (enabled: boolean) => {
     setStitchMode(enabled);
@@ -39,14 +33,27 @@ function App() {
     window.close();
   };
 
+  if (settingsOpen) {
+    return (
+      <div className="w-96 bg-white text-slate-900">
+        <SettingsView onBack={() => setSettingsOpen(false)} />
+      </div>
+    );
+  }
+
   return (
     <div className="w-96 bg-white text-slate-900">
       {/* branded header */}
-      <header className="bg-brand-light px-5 py-4 text-center text-brand-dark">
-        <h1 className="text-lg font-bold tracking-tight">Hooked</h1>
-        <p className="mt-0.5 text-xs font-medium text-brand-dark/70">
-          Your crochet pattern companion
-        </p>
+      <header className="relative flex items-center justify-center bg-brand-light px-5 py-4 text-brand-dark">
+        <div className="text-center">
+          <h1 className="text-lg font-bold tracking-tight">Hooked</h1>
+          <p className="mt-0.5 text-xs font-medium text-brand-dark/70">
+            Your crochet pattern companion
+          </p>
+        </div>
+        <div className="absolute right-2 top-2">
+          <SettingsButton onClick={() => setSettingsOpen(true)} />
+        </div>
       </header>
 
       <div className="space-y-4 p-5">
@@ -64,17 +71,6 @@ function App() {
           </p>
         </div>
 
-        {/* terminology */}
-        <section className="flex items-center justify-between gap-3">
-          <span className="text-sm font-medium text-slate-700">Terminology</span>
-          <SegmentedControl
-            options={TERMINOLOGY_OPTIONS}
-            value={terminology}
-            onChange={(v) => setTerminology(v as "us" | "uk")}
-            ariaLabel="Terminology"
-          />
-        </section>
-
         <hr className="border-slate-200" />
 
         {/* collapsed save form / saved confirmation */}
@@ -88,7 +84,7 @@ function App() {
             }}
           />
         ) : justSaved ? (
-          <div className="flex items-center justify-center rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-sm font-medium text-emerald-700">
+          <div className="flex items-center justify-center rounded-lg border border-brand-light bg-brand-light/20 px-3 py-2.5 text-sm font-medium text-brand-dark">
             Saved!
           </div>
         ) : (

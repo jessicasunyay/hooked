@@ -8,6 +8,8 @@ import { SearchBar } from "@/src/components/SearchBar";
 import { FiltersButton } from "@/src/components/FiltersButton";
 import { StatusBadge } from "@/src/components/StatusBadge";
 import { TagPill } from "@/src/components/TagPill";
+import { SettingsButton } from "@/src/components/SettingsButton";
+import { SettingsView } from "@/src/components/SettingsView";
 
 // status options for the edit form dropdown + filter button
 const STATUS_OPTIONS: { value: Status; label: string }[] = [
@@ -48,6 +50,9 @@ function App() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [detailMode, setDetailMode] = useState<DetailMode>("view");
   const [confirmDelete, setConfirmDelete] = useState(false);
+
+  // settings view state — takes over the whole panel when open
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   // edit form state
   const [editTitle, setEditTitle] = useState("");
@@ -182,6 +187,14 @@ function App() {
 
   // render
 
+  if (settingsOpen) {
+    return (
+      <div className="flex h-screen flex-col bg-white text-slate-900">
+        <SettingsView onBack={() => setSettingsOpen(false)} />
+      </div>
+    );
+  }
+
   if (view === "detail" && selectedCard) {
     return (
       <DetailView
@@ -196,6 +209,7 @@ function App() {
         onConfirmDelete={handleDelete}
         onCancelDelete={() => setConfirmDelete(false)}
         onOpenUrl={openUrl}
+        onOpenSettings={() => setSettingsOpen(true)}
         editTitle={editTitle}
         editStatus={editStatus}
         editTags={editTags}
@@ -223,6 +237,7 @@ function App() {
       onStatusChange={setStatusFilter}
       onTagChange={setTagFilter}
       onCardClick={openDetail}
+      onOpenSettings={() => setSettingsOpen(true)}
     />
   );
 }
@@ -248,6 +263,7 @@ interface ListViewProps {
   onStatusChange: (value: string | null) => void;
   onTagChange: (values: string[]) => void;
   onCardClick: (id: string) => void;
+  onOpenSettings: () => void;
 }
 
 function ListView({
@@ -260,13 +276,14 @@ function ListView({
   onStatusChange,
   onTagChange,
   onCardClick,
+  onOpenSettings,
 }: ListViewProps) {
   const hasCards = cards.length > 0;
   const hasResults = filteredCards.length > 0;
 
   return (
     <div className="flex h-screen flex-col bg-white text-slate-900">
-      <header className="border-b border-slate-200 px-4 py-3">
+      <header className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
         <h1 className="text-lg font-bold">
           Pattern Library
           {cards.length > 0 && (
@@ -275,6 +292,7 @@ function ListView({
             </span>
           )}
         </h1>
+        <SettingsButton onClick={onOpenSettings} />
       </header>
 
       {hasCards && (
@@ -330,6 +348,7 @@ interface DetailViewProps {
   onConfirmDelete: () => void;
   onCancelDelete: () => void;
   onOpenUrl: () => void;
+  onOpenSettings: () => void;
   // edit form state (passed down so the parent owns the form values)
   editTitle: string;
   editStatus: Status;
@@ -357,6 +376,7 @@ function DetailView({
   onConfirmDelete,
   onCancelDelete,
   onOpenUrl,
+  onOpenSettings,
   editTitle,
   editStatus,
   editTags,
@@ -375,7 +395,7 @@ function DetailView({
 
   return (
     <div className="flex h-screen flex-col bg-white text-slate-900">
-      <header className="flex items-center gap-2 border-b border-slate-200 px-4 py-3">
+      <header className="flex items-center justify-between gap-2 border-b border-slate-200 px-4 py-3">
         <button
           type="button"
           onClick={onBack}
@@ -383,6 +403,7 @@ function DetailView({
         >
           &larr; Back
         </button>
+        <SettingsButton onClick={onOpenSettings} />
       </header>
 
       <main className="flex-1 overflow-y-auto p-4">

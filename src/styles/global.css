@@ -1,5 +1,24 @@
 @import "tailwindcss"; /*pulls all of Tailwind's classes*/
 
+/* Use class-based dark mode (toggled via a `.dark` class on <html>) so the
+   user's Light/Dark/System setting drives `dark:*` utilities, rather than
+   always following the OS media query. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  Lazydog — a decorative display font used for the "Hooked" wordmark and
+  other branded headings. Loaded from /public/fonts so WXT serves it as a
+  static asset at the extension root. Keep body/tooltip text in the system
+  font for readability.
+*/
+@font-face {
+  font-family: "Lazydog";
+  src: url("/fonts/Lazydog.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /*
   Brand palette — a gentle pastel blue with a deep navy accent.
   Used across the popup header, primary buttons, segmented control,
@@ -8,6 +27,11 @@
 @theme {
   --color-brand-light: #8fc2e9;
   --color-brand-dark: #0c3470;
+  --color-cream: #faf6f0;
+  --color-sand: #f0e8da;
+  --color-sand-light: #e7ddcd;
+  --color-sand-dark: #d6c7b0;
+  --font-display: "Lazydog", system-ui, sans-serif;
 }
 
 /*
@@ -25,6 +49,13 @@ body,
 
 body {
   background: #ffffff;
+}
+
+/* dark mode: keep the document background in sync with the `.dark` class so
+   areas not covered by an explicit `bg-*` utility (e.g. overscroll, the
+   very edges of the popup) don't flash white. */
+.dark body {
+  background: #0f172a; /* slate-900 */
 }
 
 /* gentle idle bob for the yarn ball while Stitch Mode is on */

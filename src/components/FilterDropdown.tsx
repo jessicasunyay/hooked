@@ -81,18 +81,18 @@ export function FilterDropdown({
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="w-full rounded border border-slate-300 px-3 py-1.5 text-left text-sm hover:bg-slate-50"
+        className="w-full rounded border border-sand-dark bg-white px-3 py-1.5 text-left text-sm text-slate-700 hover:bg-cream"
       >
         {summary}
       </button>
 
       {open && (
-        <div className="absolute z-10 mt-1 w-full rounded border border-slate-200 bg-white py-1 shadow-lg">
+        <div className="absolute z-10 mt-1 w-full rounded border border-sand-light bg-white py-1 shadow-lg">
           {multi && selectedValues.length > 0 && (
             <button
               type="button"
               onClick={clearAll}
-              className="block w-full px-3 py-1 text-left text-xs text-slate-500 hover:bg-slate-50"
+              className="block w-full px-3 py-1 text-left text-xs text-slate-500 hover:bg-cream"
             >
               Clear all
             </button>
@@ -112,7 +112,7 @@ export function FilterDropdown({
                     ? handleMultiToggle(option.value)
                     : handleSingleSelect(option.value)
                 }
-                className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm hover:bg-slate-50"
+                className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm hover:bg-cream"
               >
                 <span
                   className={`h-3.5 w-3.5 shrink-0 border ${
@@ -120,7 +120,7 @@ export function FilterDropdown({
                   } ${
                     isSelected
                       ? "border-slate-900 bg-slate-900"
-                      : "border-slate-300"
+                      : "border-sand-dark"
                   }`}
                 />
                 {option.label}

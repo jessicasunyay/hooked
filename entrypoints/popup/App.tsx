@@ -44,16 +44,9 @@ function App() {
   return (
     <div className="w-96 bg-white text-slate-900">
       {/* branded header */}
-      <header className="relative flex items-center justify-center bg-brand-light px-5 py-4 text-brand-dark">
-        <div className="text-center">
-          <h1 className="text-lg font-bold tracking-tight">Hooked</h1>
-          <p className="mt-0.5 text-xs font-medium text-brand-dark/70">
-            Your crochet pattern companion
-          </p>
-        </div>
-        <div className="absolute right-2 top-2">
-          <SettingsButton onClick={() => setSettingsOpen(true)} />
-        </div>
+      <header className="flex items-center justify-between bg-brand-light px-5 py-4 text-brand-dark">
+        <h1 className="font-display text-3xl tracking-tight text-brand-dark">Hooked</h1>
+        <SettingsButton onClick={() => setSettingsOpen(true)} />
       </header>
 
       <div className="space-y-4 p-5">
@@ -71,7 +64,7 @@ function App() {
           </p>
         </div>
 
-        <hr className="border-slate-200" />
+        <hr className="border-sand-light" />
 
         {/* collapsed save form / saved confirmation */}
         {showForm ? (
@@ -91,7 +84,7 @@ function App() {
           <button
             type="button"
             onClick={() => setShowForm(true)}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+            className="w-full rounded-lg border border-sand-dark px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-cream"
           >
             Save this page
           </button>

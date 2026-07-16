@@ -68,7 +68,7 @@ export function FiltersButton({
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-1.5 rounded border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
+        className="flex items-center gap-1.5 rounded border border-sand-dark bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-cream"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -86,14 +86,14 @@ export function FiltersButton({
         </svg>
         <span>Filters</span>
         {activeCount > 0 && (
-          <span className="ml-0.5 inline-flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-slate-900 px-1 text-[10px] font-medium text-white">
+          <span className="ml-0.5 inline-flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-brand-dark px-1 text-[10px] font-medium text-white">
             {activeCount}
           </span>
         )}
       </button>
 
       {open && (
-        <div className="absolute right-0 z-10 mt-1 w-60 rounded border border-slate-200 bg-white py-2 shadow-lg">
+        <div className="absolute right-0 z-10 mt-1 w-60 rounded border border-sand-light bg-white py-2 shadow-lg">
           {activeCount > 0 && (
             <div className="px-3 pb-1">
               <button
@@ -116,11 +116,11 @@ export function FiltersButton({
                 key={option.value}
                 type="button"
                 onClick={() => toggleStatus(option.value)}
-                className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm hover:bg-slate-50"
+                className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm hover:bg-cream"
               >
                 <span
                   className={`h-3.5 w-3.5 shrink-0 rounded-full border ${
-                    isSelected ? "border-slate-900 bg-slate-900" : "border-slate-300"
+                    isSelected ? "border-brand-dark bg-brand-dark" : "border-sand-dark"
                   }`}
                 />
                 {option.label}
@@ -128,7 +128,7 @@ export function FiltersButton({
             );
           })}
 
-          <div className="my-1 border-t border-slate-200" />
+          <div className="my-1 border-t border-sand-light" />
 
           <div className="px-3 pb-1 pt-1">
             <p className="text-xs font-medium uppercase text-slate-400">Tags</p>
@@ -145,11 +145,11 @@ export function FiltersButton({
                   key={tag}
                   type="button"
                   onClick={() => toggleTag(tag)}
-                  className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm hover:bg-slate-50"
+                  className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm hover:bg-cream"
                 >
                   <span
                     className={`h-3.5 w-3.5 shrink-0 rounded-sm border ${
-                      isSelected ? "border-slate-900 bg-slate-900" : "border-slate-300"
+                      isSelected ? "border-brand-dark bg-brand-dark" : "border-sand-dark"
                     }`}
                   />
                   {tag}

@@ -2,6 +2,8 @@ export type Status = "to-try" | "wip" | "completed";
 
 export type Terminology = "us" | "uk";
 
+export type Theme = "light" | "dark" | "system";
+
 export type GlossaryProviderId = "local";
 
 export interface PatternCard {
@@ -30,4 +32,5 @@ export interface Settings {
   defaultStatus: Status;
   customEntries: GlossaryEntry[];
   provider: GlossaryProviderId;
+  theme: Theme;
 }

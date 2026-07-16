@@ -27,13 +27,13 @@ export function Card({ card, onClick }: CardProps) {
     <button
       type="button"
       onClick={onClick}
-      className="flex w-full gap-3 rounded-lg border border-slate-200 bg-white p-3 text-left hover:border-slate-300 hover:shadow-sm transition"
+      className="flex w-full gap-3 rounded-lg border border-sand-light bg-white p-3 text-left transition hover:border-sand-dark hover:bg-cream hover:shadow-sm"
     >
       <img
         src={imgFailed ? FALLBACK_IMAGE : imgSrc}
         alt={card.title}
         onError={() => setImgFailed(true)}
-        className="h-14 w-14 shrink-0 rounded-md object-contain bg-slate-50"
+        className="h-14 w-14 shrink-0 rounded-md object-contain bg-white"
       />
 
       <div className="min-w-0 flex-1">

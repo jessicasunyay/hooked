@@ -122,7 +122,7 @@ export function SaveForm({ onDone, onSaved }: SaveFormProps) {
           <button
             type="button"
             onClick={() => setDuplicate(null)}
-            className="rounded border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
+            className="rounded border border-sand-dark px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-cream"
           >
             Cancel
           </button>
@@ -163,7 +163,7 @@ export function SaveForm({ onDone, onSaved }: SaveFormProps) {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Pattern title"
-          className="w-full rounded border border-slate-300 px-2 py-1 text-sm"
+          className="w-full rounded border border-sand-dark bg-white px-2 py-1 text-sm placeholder:text-slate-400 focus:border-brand-light focus:outline-none"
         />
       </div>
 
@@ -172,7 +172,7 @@ export function SaveForm({ onDone, onSaved }: SaveFormProps) {
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value as Status)}
-          className="w-full rounded border border-slate-300 px-2 py-1 text-sm"
+          className="w-full rounded border border-sand-dark bg-white px-2 py-1 text-sm focus:border-brand-light focus:outline-none"
         >
           {STATUS_OPTIONS.map((opt) => (
             <option key={opt.value} value={opt.value}>
@@ -184,7 +184,7 @@ export function SaveForm({ onDone, onSaved }: SaveFormProps) {
 
       <div>
         <label className="mb-1 block text-sm font-medium">Tags</label>
-        <div className="flex flex-wrap items-center gap-1 rounded border border-slate-300 px-2 py-1.5">
+        <div className="flex flex-wrap items-center gap-1 rounded border border-sand-dark bg-white px-2 py-1.5">
           {tags.map((tag) => (
             <TagPill key={tag} tag={tag} onDelete={() => removeTag(tag)} />
           ))}
@@ -207,7 +207,7 @@ export function SaveForm({ onDone, onSaved }: SaveFormProps) {
           onChange={(e) => setNotes(e.target.value)}
           rows={2}
           placeholder="Optional notes"
-          className="w-full rounded border border-slate-300 px-2 py-1 text-sm"
+          className="w-full rounded border border-sand-dark bg-white px-2 py-1 text-sm placeholder:text-slate-400 focus:border-brand-light focus:outline-none"
         />
       </div>
 

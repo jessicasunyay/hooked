@@ -6,7 +6,7 @@ import type { Status } from "@/src/types";
 const STATUS_CONFIG: Record<Status, { label: string; classes: string }> = {
   "to-try": {
     label: "To Try",
-    classes: "bg-slate-100 text-slate-700",
+    classes: "bg-sand text-slate-700",
   },
   wip: {
     label: "WIP",

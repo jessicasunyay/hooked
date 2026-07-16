@@ -27,7 +27,7 @@ export function SettingsView({ onBack }: SettingsViewProps) {
 
   return (
     <div className="flex h-full flex-col">
-      <header className="relative flex items-center border-b border-slate-200 px-4 py-3">
+      <header className="relative flex items-center border-b border-sand-light px-4 py-3">
         <button
           type="button"
           onClick={onBack}
@@ -58,7 +58,7 @@ export function SettingsView({ onBack }: SettingsViewProps) {
           />
         </div>
 
-        <div className="border-t border-slate-200" />
+        <div className="border-t border-sand-light" />
 
         <div>
           <span className="block text-sm font-medium text-slate-700">
@@ -70,7 +70,7 @@ export function SettingsView({ onBack }: SettingsViewProps) {
           <select
             value={defaultStatus}
             onChange={(e) => setDefaultStatus(e.target.value as Status)}
-            className="w-full rounded border border-slate-300 bg-white px-2 py-1.5 text-sm"
+            className="w-full rounded border border-sand-dark bg-white px-2 py-1.5 text-sm focus:border-brand-light focus:outline-none"
           >
             {STATUS_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>

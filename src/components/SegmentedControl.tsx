@@ -21,7 +21,7 @@ export function SegmentedControl({
     <div
       role="group"
       aria-label={ariaLabel}
-      className="inline-flex rounded-full border border-slate-200 p-0.5"
+      className="inline-flex rounded-full border border-sand-light bg-cream p-0.5"
     >
       {options.map((option) => {
         const selected = option.value === value;

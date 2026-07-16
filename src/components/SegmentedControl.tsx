@@ -21,7 +21,7 @@ export function SegmentedControl({
     <div
       role="group"
       aria-label={ariaLabel}
-      className="inline-flex rounded-full border border-sand-light bg-cream p-0.5"
+      className="inline-flex rounded-full border border-sand-light bg-cream p-0.5 dark:border-slate-700 dark:bg-slate-800"
     >
       {options.map((option) => {
         const selected = option.value === value;
@@ -34,7 +34,7 @@ export function SegmentedControl({
             className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
               selected
                 ? "bg-brand-dark text-white"
-                : "text-slate-600 hover:text-slate-900"
+                : "text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
             }`}
           >
             {option.label}

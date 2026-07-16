@@ -27,20 +27,20 @@ export function Card({ card, onClick }: CardProps) {
     <button
       type="button"
       onClick={onClick}
-      className="flex w-full gap-3 rounded-lg border border-sand-light bg-white p-3 text-left transition hover:border-sand-dark hover:bg-cream hover:shadow-sm"
+      className="flex w-full gap-3 rounded-lg border border-sand-light bg-white p-3 text-left transition hover:border-sand-dark hover:bg-cream hover:shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:hover:border-slate-600 dark:hover:bg-slate-700/50"
     >
       <img
         src={imgFailed ? FALLBACK_IMAGE : imgSrc}
         alt={card.title}
         onError={() => setImgFailed(true)}
-        className="h-14 w-14 shrink-0 rounded-md object-contain bg-white"
+        className="h-14 w-14 shrink-0 rounded-md object-contain bg-white dark:bg-slate-700"
       />
 
       <div className="min-w-0 flex-1">
-        <h3 className="truncate text-sm font-medium text-slate-900">
+        <h3 className="truncate text-sm font-medium text-slate-900 dark:text-slate-100">
           {card.title}
         </h3>
-        <p className="truncate text-xs text-slate-400">
+        <p className="truncate text-xs text-slate-400 dark:text-slate-400">
           {sourceHostname(card.url)}
         </p>
 

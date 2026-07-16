@@ -81,18 +81,18 @@ export function FilterDropdown({
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="w-full rounded border border-sand-dark bg-white px-3 py-1.5 text-left text-sm text-slate-700 hover:bg-cream"
+        className="w-full rounded border border-sand-dark bg-white px-3 py-1.5 text-left text-sm text-slate-700 hover:bg-cream dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
       >
         {summary}
       </button>
 
       {open && (
-        <div className="absolute z-10 mt-1 w-full rounded border border-sand-light bg-white py-1 shadow-lg">
+        <div className="absolute z-10 mt-1 w-full rounded border border-sand-light bg-white py-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
           {multi && selectedValues.length > 0 && (
             <button
               type="button"
               onClick={clearAll}
-              className="block w-full px-3 py-1 text-left text-xs text-slate-500 hover:bg-cream"
+              className="block w-full px-3 py-1 text-left text-xs text-slate-500 hover:bg-cream dark:text-slate-400 dark:hover:bg-slate-700"
             >
               Clear all
             </button>
@@ -112,15 +112,15 @@ export function FilterDropdown({
                     ? handleMultiToggle(option.value)
                     : handleSingleSelect(option.value)
                 }
-                className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm hover:bg-cream"
+                className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm text-slate-700 hover:bg-cream dark:text-slate-200 dark:hover:bg-slate-700"
               >
                 <span
                   className={`h-3.5 w-3.5 shrink-0 border ${
                     multi ? "rounded-sm" : "rounded-full"
                   } ${
                     isSelected
-                      ? "border-slate-900 bg-slate-900"
-                      : "border-sand-dark"
+                      ? "border-slate-900 bg-slate-900 dark:border-white dark:bg-white"
+                      : "border-sand-dark dark:border-slate-600"
                   }`}
                 />
                 {option.label}

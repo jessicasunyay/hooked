@@ -34,7 +34,7 @@ export function YarnBall({ active, onToggle }: YarnBallProps) {
       aria-checked={active}
       aria-label="Toggle Stitch Mode"
       onClick={onToggle}
-      className="rounded-full p-1 transition-transform hover:scale-110 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-light focus-visible:ring-offset-2"
+      className="rounded-full p-1 transition-transform hover:scale-110 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-light focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-900"
     >
       <span className={`inline-block ${active ? "yarn-float" : ""}`}>
         <img

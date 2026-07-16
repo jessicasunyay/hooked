@@ -97,17 +97,17 @@ export function SaveForm({ onDone, onSaved }: SaveFormProps) {
 
   if (loading) {
     return (
-      <div className="py-8 text-center text-sm text-slate-400">Loading…</div>
+      <div className="py-8 text-center text-sm text-slate-400 dark:text-slate-500">Loading…</div>
     );
   }
 
   if (duplicate) {
     return (
-      <div className="rounded border border-amber-200 bg-amber-50 p-3">
-        <p className="text-sm font-medium text-amber-800">
+      <div className="rounded border border-amber-200 bg-amber-50 p-3 dark:border-amber-800/60 dark:bg-amber-900/30">
+        <p className="text-sm font-medium text-amber-800 dark:text-amber-200">
           Already in your library
         </p>
-        <p className="mt-1 text-xs text-amber-700">
+        <p className="mt-1 text-xs text-amber-700 dark:text-amber-300">
           You saved &ldquo;{duplicate.title}&rdquo; on{" "}
           {new Date(duplicate.dateSaved).toLocaleDateString()}.
         </p>
@@ -122,7 +122,7 @@ export function SaveForm({ onDone, onSaved }: SaveFormProps) {
           <button
             type="button"
             onClick={() => setDuplicate(null)}
-            className="rounded border border-sand-dark px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-cream"
+            className="rounded border border-sand-dark px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-cream dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
           >
             Cancel
           </button>
@@ -143,13 +143,13 @@ export function SaveForm({ onDone, onSaved }: SaveFormProps) {
       className="space-y-3"
     >
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-slate-500">Save this page</h2>
+        <h2 className="text-sm font-semibold text-slate-500 dark:text-slate-300">Save this page</h2>
         {onDone && (
           <button
             type="button"
             onClick={onDone}
             aria-label="Cancel save"
-            className="text-slate-400 hover:text-slate-700"
+            className="text-slate-400 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-200"
           >
             &times;
           </button>
@@ -157,22 +157,22 @@ export function SaveForm({ onDone, onSaved }: SaveFormProps) {
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-medium">Title</label>
+        <label className="mb-1 block text-sm font-medium dark:text-slate-200">Title</label>
         <input
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Pattern title"
-          className="w-full rounded border border-sand-dark bg-white px-2 py-1 text-sm placeholder:text-slate-400 focus:border-brand-light focus:outline-none"
+          className="w-full rounded border border-sand-dark bg-white px-2 py-1 text-sm text-slate-900 placeholder:text-slate-400 focus:border-brand-light focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500"
         />
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-medium">Status</label>
+        <label className="mb-1 block text-sm font-medium dark:text-slate-200">Status</label>
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value as Status)}
-          className="w-full rounded border border-sand-dark bg-white px-2 py-1 text-sm focus:border-brand-light focus:outline-none"
+          className="w-full rounded border border-sand-dark bg-white px-2 py-1 text-sm text-slate-900 focus:border-brand-light focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
         >
           {STATUS_OPTIONS.map((opt) => (
             <option key={opt.value} value={opt.value}>
@@ -183,8 +183,8 @@ export function SaveForm({ onDone, onSaved }: SaveFormProps) {
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-medium">Tags</label>
-        <div className="flex flex-wrap items-center gap-1 rounded border border-sand-dark bg-white px-2 py-1.5">
+        <label className="mb-1 block text-sm font-medium dark:text-slate-200">Tags</label>
+        <div className="flex flex-wrap items-center gap-1 rounded border border-sand-dark bg-white px-2 py-1.5 dark:border-slate-700 dark:bg-slate-800">
           {tags.map((tag) => (
             <TagPill key={tag} tag={tag} onDelete={() => removeTag(tag)} />
           ))}
@@ -195,26 +195,26 @@ export function SaveForm({ onDone, onSaved }: SaveFormProps) {
             onKeyDown={handleTagKeyDown}
             onBlur={addTag}
             placeholder={tags.length === 0 ? "Add tags…" : ""}
-            className="min-w-[80px] flex-1 text-sm outline-none"
+            className="min-w-[80px] flex-1 text-sm text-slate-900 outline-none placeholder:text-slate-400 dark:text-slate-100 dark:placeholder:text-slate-500"
           />
         </div>
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-medium">Notes</label>
+        <label className="mb-1 block text-sm font-medium dark:text-slate-200">Notes</label>
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           rows={2}
           placeholder="Optional notes"
-          className="w-full rounded border border-sand-dark bg-white px-2 py-1 text-sm placeholder:text-slate-400 focus:border-brand-light focus:outline-none"
+          className="w-full rounded border border-sand-dark bg-white px-2 py-1 text-sm text-slate-900 placeholder:text-slate-400 focus:border-brand-light focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500"
         />
       </div>
 
       <button
         type="submit"
         disabled={!canSave}
-        className="w-full rounded-lg bg-brand-light px-3 py-2.5 text-sm font-semibold text-brand-dark shadow-sm transition hover:bg-brand-dark hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+        className="w-full rounded-lg bg-brand-light px-3 py-2.5 text-sm font-semibold text-brand-dark shadow-sm transition hover:bg-brand-dark hover:text-white disabled:cursor-not-allowed disabled:opacity-50 dark:bg-brand-darker dark:text-white dark:hover:bg-brand-dark"
       >
         Save Pattern
       </button>

@@ -41,7 +41,7 @@ export function SearchBar({
       value={inputValue}
       onChange={(e) => setInputValue(e.target.value)}
       placeholder={placeholder}
-      className="w-full rounded border border-sand-dark bg-white px-3 py-1.5 text-sm placeholder:text-slate-400 focus:border-brand-light focus:outline-none"
+      className="w-full rounded border border-sand-dark bg-white px-3 py-1.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-brand-light focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500"
     />
   );
 }

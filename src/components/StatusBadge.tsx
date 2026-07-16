@@ -6,15 +6,18 @@ import type { Status } from "@/src/types";
 const STATUS_CONFIG: Record<Status, { label: string; classes: string }> = {
   "to-try": {
     label: "To Try",
-    classes: "bg-sand text-slate-700",
+    classes:
+      "bg-sand text-slate-700 dark:bg-slate-700 dark:text-slate-200",
   },
   wip: {
     label: "WIP",
-    classes: "bg-amber-100 text-amber-800",
+    classes:
+      "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200",
   },
   completed: {
     label: "Completed",
-    classes: "bg-emerald-100 text-emerald-800",
+    classes:
+      "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200",
   },
 };
 

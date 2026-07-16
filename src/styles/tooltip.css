@@ -89,6 +89,16 @@
   overflow: hidden;
 }
 
+/* dark variant — toggled via a `.dark` class on .hooked-tooltip by the
+   content script (shadow DOM is isolated, so Tailwind's `dark:` utilities
+   on the host document don't reach in here). */
+.hooked-tooltip.dark {
+  background: #1e293b; /* slate-800 */
+  border-color: #334155; /* slate-700 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  color: #e2e8f0; /* slate-200 */
+}
+
 .hooked-tooltip__entry {
   padding: 10px 12px;
 }
@@ -97,6 +107,10 @@
    them. The second entry gets a top border. */
 .hooked-tooltip__entry + .hooked-tooltip__entry {
   border-top: 1px solid #e2e8f0; /* slate-200 */
+}
+
+.hooked-tooltip.dark .hooked-tooltip__entry + .hooked-tooltip__entry {
+  border-top-color: #334155; /* slate-700 */
 }
 
 .hooked-tooltip__names {
@@ -111,12 +125,24 @@
   color: #0f172a; /* slate-900 */
 }
 
+.hooked-tooltip.dark .hooked-tooltip__name--primary {
+  color: #f1f5f9; /* slate-100 */
+}
+
 .hooked-tooltip__name--equiv {
   font-size: 12px;
   color: #64748b; /* slate-500 */
 }
 
+.hooked-tooltip.dark .hooked-tooltip__name--equiv {
+  color: #94a3b8; /* slate-400 */
+}
+
 .hooked-tooltip__def {
   margin: 0;
   color: #334155; /* slate-700 */
+}
+
+.hooked-tooltip.dark .hooked-tooltip__def {
+  color: #cbd5e1; /* slate-300 */
 }

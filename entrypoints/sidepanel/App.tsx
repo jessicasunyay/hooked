@@ -1,7 +1,9 @@
 import { useState, useMemo, useEffect } from "react";
 import type { Status, PatternCard } from "@/src/types";
 import { usePatternsStore } from "@/src/store/patterns";
+import { useSettingsStore } from "@/src/store/settings";
 import { useCardImage, FALLBACK_IMAGE } from "@/src/lib/image";
+import { useTheme } from "@/src/lib/theme";
 import { Card } from "@/src/components/Card";
 import { EmptyState } from "@/src/components/EmptyState";
 import { SearchBar } from "@/src/components/SearchBar";
@@ -21,6 +23,9 @@ const STATUS_OPTIONS: { value: Status; label: string }[] = [
 type View = "list" | "detail"; // card list v. card details
 type DetailMode = "view" | "edit"; // viewing v. editing
 function App() {
+  // keep <html> in sync with the user's theme setting (light/dark/system)
+  useTheme();
+
   const cards = usePatternsStore((s) => s.cards);
   const updateCard = usePatternsStore((s) => s.updateCard);
   const deleteCard = usePatternsStore((s) => s.deleteCard);
@@ -34,6 +39,7 @@ function App() {
     ) => {
       if (areaName === "local") {
         usePatternsStore.persist.rehydrate();
+        useSettingsStore.persist.rehydrate();
       }
     };
     browser.storage.onChanged.addListener(handleStorageChange);
@@ -189,7 +195,7 @@ function App() {
 
   if (settingsOpen) {
     return (
-      <div className="flex h-screen flex-col bg-white text-slate-900">
+      <div className="flex h-screen flex-col bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100">
         <SettingsView onBack={() => setSettingsOpen(false)} />
       </div>
     );
@@ -282,12 +288,12 @@ function ListView({
   const hasResults = filteredCards.length > 0;
 
   return (
-    <div className="flex h-screen flex-col bg-white text-slate-900">
-      <header className="flex items-center justify-between bg-brand-light px-4 py-3 text-brand-dark">
-        <h1 className="text-lg font-bold">
+    <div className="flex h-screen flex-col bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100">
+      <header className="flex items-center justify-between bg-brand-light px-4 py-3 text-brand-dark dark:bg-brand-darker dark:text-white">
+        <h1 className="text-lg font-bold dark:text-white">
           <span className="font-display">Pattern Library</span>
           {cards.length > 0 && (
-            <span className="ml-2 text-sm font-normal text-brand-dark/70">
+            <span className="ml-2 text-sm font-normal text-brand-dark/70 dark:text-white/70">
               ({cards.length})
             </span>
           )}
@@ -296,7 +302,7 @@ function ListView({
       </header>
 
       {hasCards && (
-        <div className="flex gap-2 border-b border-sand-light px-4 py-3">
+        <div className="flex gap-2 border-b border-sand-light px-4 py-3 dark:border-slate-700">
           <div className="flex-1">
             <SearchBar onSearch={onSearch} placeholder="Search title, tags, notes…" />
           </div>
@@ -394,12 +400,12 @@ function DetailView({
   const [imgFailed, setImgFailed] = useState(false);
 
   return (
-    <div className="flex h-screen flex-col bg-white text-slate-900">
-      <header className="flex items-center justify-between gap-2 bg-brand-light px-4 py-3 text-brand-dark">
+    <div className="flex h-screen flex-col bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100">
+      <header className="flex items-center justify-between gap-2 bg-brand-light px-4 py-3 text-brand-dark dark:bg-brand-darker dark:text-white">
         <button
           type="button"
           onClick={onBack}
-          className="text-sm text-brand-dark/80 hover:text-brand-dark"
+          className="text-sm text-brand-dark/80 hover:text-brand-dark dark:text-white/80 dark:hover:text-white"
         >
           &larr; Back
         </button>
@@ -416,21 +422,21 @@ function DetailView({
             className="space-y-3"
           >
             <div>
-              <label className="mb-1 block text-sm font-medium">Title</label>
+              <label className="mb-1 block text-sm font-medium dark:text-slate-200">Title</label>
               <input
                 type="text"
                 value={editTitle}
                 onChange={(e) => setEditTitle(e.target.value)}
-                className="w-full rounded border border-sand-dark bg-white px-2 py-1 text-sm focus:border-brand-light focus:outline-none"
+                className="w-full rounded border border-sand-dark bg-white px-2 py-1 text-sm text-slate-900 focus:border-brand-light focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
               />
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium">Status</label>
+              <label className="mb-1 block text-sm font-medium dark:text-slate-200">Status</label>
               <select
                 value={editStatus}
                 onChange={(e) => setEditStatus(e.target.value as Status)}
-                className="w-full rounded border border-sand-dark bg-white px-2 py-1 text-sm focus:border-brand-light focus:outline-none"
+                className="w-full rounded border border-sand-dark bg-white px-2 py-1 text-sm text-slate-900 focus:border-brand-light focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
               >
                 {STATUS_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>
@@ -441,8 +447,8 @@ function DetailView({
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium">Tags</label>
-              <div className="flex flex-wrap items-center gap-1 rounded border border-sand-dark bg-white px-2 py-1.5">
+              <label className="mb-1 block text-sm font-medium dark:text-slate-200">Tags</label>
+              <div className="flex flex-wrap items-center gap-1 rounded border border-sand-dark bg-white px-2 py-1.5 dark:border-slate-700 dark:bg-slate-800">
                 {editTags.map((tag) => (
                   <TagPill
                     key={tag}
@@ -457,32 +463,32 @@ function DetailView({
                   onKeyDown={handleEditTagKeyDown}
                   onBlur={addEditTag}
                   placeholder={editTags.length === 0 ? "Add tags…" : ""}
-                  className="min-w-[80px] flex-1 text-sm outline-none"
+                  className="min-w-[80px] flex-1 text-sm text-slate-900 outline-none placeholder:text-slate-400 dark:text-slate-100 dark:placeholder:text-slate-500"
                 />
               </div>
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium">Notes</label>
+              <label className="mb-1 block text-sm font-medium dark:text-slate-200">Notes</label>
               <textarea
                 value={editNotes}
                 onChange={(e) => setEditNotes(e.target.value)}
                 rows={4}
-                className="w-full rounded border border-sand-dark bg-white px-2 py-1 text-sm focus:border-brand-light focus:outline-none"
+                className="w-full rounded border border-sand-dark bg-white px-2 py-1 text-sm text-slate-900 focus:border-brand-light focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
               />
             </div>
 
             <div className="flex gap-2">
               <button
                 type="submit"
-                className="flex-1 rounded bg-brand-light px-3 py-2 text-sm font-semibold text-brand-dark transition hover:bg-brand-dark hover:text-white"
+                className="flex-1 rounded bg-brand-light px-3 py-2 text-sm font-semibold text-brand-dark transition hover:bg-brand-dark hover:text-white dark:bg-brand-darker dark:text-white dark:hover:bg-brand-dark"
               >
                 Save
               </button>
               <button
                 type="button"
                 onClick={onCancelEdit}
-                className="rounded border border-sand-dark px-3 py-2 text-sm font-medium text-slate-700 hover:bg-cream"
+                className="rounded border border-sand-dark px-3 py-2 text-sm font-medium text-slate-700 hover:bg-cream dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
               >
                 Cancel
               </button>
@@ -495,13 +501,13 @@ function DetailView({
                 src={imgFailed ? FALLBACK_IMAGE : imgSrc}
                 alt={card.title}
                 onError={() => setImgFailed(true)}
-                className="h-16 w-16 shrink-0 rounded-md object-contain bg-white"
+                className="h-16 w-16 shrink-0 rounded-md object-contain bg-white dark:bg-slate-700"
               />
               <div className="min-w-0 flex-1">
-                <h2 className="text-base font-semibold text-slate-900">
+                <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">
                   {card.title}
                 </h2>
-                <p className="truncate text-xs text-slate-400">
+                <p className="truncate text-xs text-slate-400 dark:text-slate-400">
                   {safeHostname(card.url)}
                 </p>
                 <div className="mt-2">
@@ -519,10 +525,10 @@ function DetailView({
             )}
 
             <div>
-              <p className="text-xs font-medium uppercase text-slate-400">
+              <p className="text-xs font-medium uppercase text-slate-400 dark:text-slate-500">
                 Saved
               </p>
-              <p className="text-sm text-slate-700">
+              <p className="text-sm text-slate-700 dark:text-slate-300">
                 {new Date(card.dateSaved).toLocaleDateString(undefined, {
                   year: "numeric",
                   month: "long",
@@ -533,20 +539,20 @@ function DetailView({
 
             {card.notes && (
               <div>
-                <p className="text-xs font-medium uppercase text-slate-400">
+                <p className="text-xs font-medium uppercase text-slate-400 dark:text-slate-500">
                   Notes
                 </p>
-                <p className="mt-1 whitespace-pre-wrap text-sm text-slate-700">
+                <p className="mt-1 whitespace-pre-wrap text-sm text-slate-700 dark:text-slate-300">
                   {card.notes}
                 </p>
               </div>
             )}
 
-            <div className="space-y-2 border-t border-sand-light pt-4">
+            <div className="space-y-2 border-t border-sand-light pt-4 dark:border-slate-700">
               <button
                 type="button"
                 onClick={onOpenUrl}
-                className="w-full rounded bg-brand-light px-3 py-2 text-sm font-semibold text-brand-dark transition hover:bg-brand-dark hover:text-white"
+                className="w-full rounded bg-brand-light px-3 py-2 text-sm font-semibold text-brand-dark transition hover:bg-brand-dark hover:text-white dark:bg-brand-darker dark:text-white dark:hover:bg-brand-dark"
               >
                 Open URL
               </button>
@@ -554,7 +560,7 @@ function DetailView({
                 <button
                   type="button"
                   onClick={onEdit}
-                  className="flex-1 rounded border border-sand-dark px-3 py-2 text-sm font-medium text-slate-700 hover:bg-cream"
+                  className="flex-1 rounded border border-sand-dark px-3 py-2 text-sm font-medium text-slate-700 hover:bg-cream dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
                 >
                   Edit
                 </button>
@@ -570,7 +576,7 @@ function DetailView({
                     <button
                       type="button"
                       onClick={onCancelDelete}
-                      className="rounded border border-sand-dark px-3 py-2 text-sm font-medium text-slate-700 hover:bg-cream"
+                      className="rounded border border-sand-dark px-3 py-2 text-sm font-medium text-slate-700 hover:bg-cream dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
                     >
                       No
                     </button>
@@ -579,7 +585,7 @@ function DetailView({
                   <button
                     type="button"
                     onClick={onDelete}
-                    className="flex-1 rounded border border-red-300 px-3 py-2 text-sm font-medium text-red-700 hover:bg-red-50"
+                    className="flex-1 rounded border border-red-300 px-3 py-2 text-sm font-medium text-red-700 hover:bg-red-50 dark:border-red-800 dark:text-red-300 dark:hover:bg-red-900/30"
                   >
                     Delete
                   </button>

@@ -3,6 +3,7 @@ import { LocalProvider } from "@/src/lib/glossary/local";
 import { onMessage } from "@/src/lib/messaging";
 import type { GlossaryEntry, Terminology } from "@/src/types";
 import { sortEntriesByTerminology } from "@/src/lib/glossary/ambiguous";
+import { resolveTheme } from "@/src/lib/theme";
 import "@/src/styles/stitch-mode.css";
 import tooltipCss from "@/src/styles/tooltip.css?raw";
 
@@ -229,12 +230,20 @@ async function showTooltipForMark(mark: HTMLElement): Promise<void> {
   if (currentMark !== mark) return;
 
   await useSettingsStore.persist.rehydrate();
-  const terminology = useSettingsStore.getState().terminology;
+  const settings = useSettingsStore.getState();
+  const terminology = settings.terminology;
 
   // sort entries so the user's terminology interpretation comes first
   const sortedEntries = sortEntriesByTerminology(term, entries, terminology);
 
   const content = buildTooltipContent(sortedEntries, terminology);
+
+  // match the tooltip to the user's theme (shadow DOM is isolated from the
+  // document's `.dark` class, so we toggle a local class on the tooltip)
+  if (resolveTheme(settings.theme) === "dark") {
+    content.classList.add("dark");
+  }
+
   const oldContent = tooltipShadow.querySelector(".hooked-tooltip");
   if (oldContent) {
     oldContent.replaceWith(content);

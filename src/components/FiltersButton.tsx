@@ -68,7 +68,7 @@ export function FiltersButton({
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-1.5 rounded border border-sand-dark bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-cream"
+        className="flex items-center gap-1.5 rounded border border-sand-dark bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-cream dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -93,13 +93,13 @@ export function FiltersButton({
       </button>
 
       {open && (
-        <div className="absolute right-0 z-10 mt-1 w-60 rounded border border-sand-light bg-white py-2 shadow-lg">
+        <div className="absolute right-0 z-10 mt-1 w-60 rounded border border-sand-light bg-white py-2 shadow-lg dark:border-slate-700 dark:bg-slate-800">
           {activeCount > 0 && (
             <div className="px-3 pb-1">
               <button
                 type="button"
                 onClick={clearAll}
-                className="text-xs text-slate-500 hover:text-slate-900"
+                className="text-xs text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
               >
                 Clear all
               </button>
@@ -107,7 +107,7 @@ export function FiltersButton({
           )}
 
           <div className="px-3 pb-1 pt-1">
-            <p className="text-xs font-medium uppercase text-slate-400">Status</p>
+            <p className="text-xs font-medium uppercase text-slate-400 dark:text-slate-500">Status</p>
           </div>
           {statusOptions.map((option) => {
             const isSelected = selectedStatus === option.value;
@@ -116,11 +116,11 @@ export function FiltersButton({
                 key={option.value}
                 type="button"
                 onClick={() => toggleStatus(option.value)}
-                className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm hover:bg-cream"
+                className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm text-slate-700 hover:bg-cream dark:text-slate-200 dark:hover:bg-slate-700"
               >
                 <span
                   className={`h-3.5 w-3.5 shrink-0 rounded-full border ${
-                    isSelected ? "border-brand-dark bg-brand-dark" : "border-sand-dark"
+                    isSelected ? "border-brand-dark bg-brand-dark" : "border-sand-dark dark:border-slate-600"
                   }`}
                 />
                 {option.label}
@@ -128,13 +128,13 @@ export function FiltersButton({
             );
           })}
 
-          <div className="my-1 border-t border-sand-light" />
+          <div className="my-1 border-t border-sand-light dark:border-slate-700" />
 
           <div className="px-3 pb-1 pt-1">
-            <p className="text-xs font-medium uppercase text-slate-400">Tags</p>
+            <p className="text-xs font-medium uppercase text-slate-400 dark:text-slate-500">Tags</p>
           </div>
           {tagOptions.length === 0 ? (
-            <p className="px-3 py-1.5 text-sm text-slate-400">
+            <p className="px-3 py-1.5 text-sm text-slate-400 dark:text-slate-500">
               No tags available
             </p>
           ) : (
@@ -145,11 +145,11 @@ export function FiltersButton({
                   key={tag}
                   type="button"
                   onClick={() => toggleTag(tag)}
-                  className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm hover:bg-cream"
+                  className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm text-slate-700 hover:bg-cream dark:text-slate-200 dark:hover:bg-slate-700"
                 >
                   <span
                     className={`h-3.5 w-3.5 shrink-0 rounded-sm border ${
-                      isSelected ? "border-brand-dark bg-brand-dark" : "border-sand-dark"
+                      isSelected ? "border-brand-dark bg-brand-dark" : "border-sand-dark dark:border-slate-600"
                     }`}
                   />
                   {tag}
